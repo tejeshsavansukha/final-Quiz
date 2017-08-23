@@ -28,9 +28,9 @@ if (isset($_POST['submit']))
 {
     if (isset($_POST['opt']))
     {
-        if ($_POST['opt'] == 'Easy') { header('Location: quiz1.php'); }
-        elseif ($_POST['opt'] == 'Medium') { header('Location: quiz2.html'); }
-         elseif ($_POST['opt'] == 'Hard') { header('Location: quiz3.html'); }
+        if ($_POST['opt'] == 'Easy') { header('Location: easy.html'); }
+        elseif ($_POST['opt'] == 'Medium') { header('Location: medium.html'); }
+         elseif ($_POST['opt'] == 'Hard') { header('Location: hard.html'); }
         
     }
 }
