@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Level:Hard</title>
+<style>
+div#test{ border:#000 1px solid; padding:10px 40px 40px 40px; text-align: justify;}
+		b.r{color:Crimson;}
+		input[type=radio],input[type=checkbox],button,label{cursor:pointer;}
+		#test{border:#000 1px solid;padding:10px 40px 40px 40px;}
+		#tt{padding:10px;}
+</style>
+
+	<script>
+		var questions = [
+		       [
+			   /* here we will move asked (whether answered or not) questions */
+			   ],
+		       [[ "Grand Central Terminal, Park Avenue, New York is the world's", "highest railway station", "longest railway station", "largest railway station","None Of the above"  ],"false",3],
+	[[ "Dr. Zakir Hussain was", "first vice president of India", "the first Muslim president of India", "First president of Indian National Congress","First Speaker of Lok Sabha"  ],"false",2],
+	[[ "For which of the following disciplines is Nobel Prize awarded?", "Literature, Peace and Economics", "Physics and Chemistry", "Physiology or Medicine","All of the above" ],"false",4],
+	[[ "Garampani sanctuary is located at", "Gangtok, Sikkim", "Kohima, Nagaland", "Diphu, Assam","Junagarh, Gujarat" ],"false",3 ],
+	[[ "Eritrea, which became the 182nd member of the UN in 1993, is in the continent of", "Africa", "Asia", "Australia","Europe" ],"false",1 ]
+
+		],
+		to='',
+		sec=30,
+		A;
+		function _(x){
+			return document.getElementById(x);
+		}
+		function getRandomInt(min,max){
+			return Math.floor(Math.random() * (max - min)) + min;
+		}
+		function in_array(what,where){
+			for(var i=0; i < where.length; i++)if(what == where[i])return true;return false;
+		}
+
+		function ask(){
+			var len=questions.length;
+			if(len==1){
+				var answers=questions[0],
+			    a_len=answers.length,
+				cor=0,
+				incor=0,
+				msg='';
+				
+				for(var z=0; z < a_len; z++){
+					if(in_array('true',answers[z])){cor++;}
+					else{incor++;}
+				}
+				
+				msg='<h2>You got '+ cor +' out of ' + a_len+ ' questions correct</h2><br/>';
+				_('test').innerHTML=msg;
+				if(_('nw').checked){
+					var win=window.open('','resultWin','width=500,height=500,top=0,left=0,statusbar=no,searchbar=no,titlebar=no,toolbar=no,location=no,scrollbars=no');
+					win.document.write('<center><div style="padding:150px 20px;">'+msg+'</div><a href="#null" onclick="window.close();">Close</a></center>');
+					win.focus();
+					win.moveBy((screen.width-500)/2,(screen.height-500)/3);
+				}
+				return;
+			}
+			else{
+				var answered=questions[0].length;
+			    temp=questions.slice(1);
+				total=answered + temp.length;
+				index=getRandomInt(0,temp.length),
+			    Q=A=temp[index];
+				Q_answer_index=Q[2];
+				q_text=Q[0][0];
+				q_answers=Q[0].slice(1);
+				test=_('test');
+				i=0;
+				user_input='false';
+		
+				test.innerHTML='<div>You have answered '+answered+' questions from '+total+'</div><h3>'+q_text+'</h3><div id="tt"></div>';
+				test.innerHTML='<div>You have answered '+answered+' questions from '+total+'</div><h3>'+q_text+'</h3><div id="tt"></div>';
+
+				
+				for(; i<q_answers.length; i++){
+					var val=(i+1==Q_answer_index) ? 'true' : 'false';
+					test.innerHTML+='<b>'+(i+1)+'.</b>&nbsp;<input type="radio" name="choices" value="'+val+'" title="'+val+'" />&nbsp;<i>'+q_answers[i]+'</i><br />';
+				}
+				
+				test.innerHTML+='<br /><button>Submit Answer</button>';
+				
+				var opts=test.querySelectorAll('[type="radio"]'),
+				btn=test.querySelector('button');
+				
+				for(var k=0; k<opts.length; k++){
+					opts[k].onchange=function(){user_input=this.value;}
+				}
+				
+				btn.onclick=function(){
+					A[1]=user_input;
+					clearTimeout(to);
+					answer(index+1);
+				}
+				
+				timer(sec,index+1);
+			}
+
+		}
+
+	function timer(val,ind){
+		var ending=(val > 1) ? 's' : '';
+		var txt='<b class="r">'+( val>9 ? val : ('0'+val) )+'</b> second'+ending+' left';
+		if(val > 0){
+			_('tt').innerHTML=txt;
+			val--;
+			to=setTimeout('timer('+val+','+ind+')',1000);
+		}
+		else{
+			_('tt').innerHTML='Time is up';
+			clearTimeout(to);
+			answer(ind);
+			return;
+		}
+	}
+
+	function answer(ind){
+		questions[0].push(A);
+		questions.splice(ind,1);
+		setTimeout('ask()',200);
+	}
+
+onload=ask;
+</script></head>
+
+<body>
+		<h1 style="text-align: center;background-color:Grey; font-family: Comic Sans Ms; color: Black;  margin-top: 0">Welcome To Level: Hard</h1>
+<h2 id="test_status"></h2>
+<div id="test"></div>
+</body>
+</html>
